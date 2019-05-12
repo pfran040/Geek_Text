@@ -1,0 +1,64 @@
+{% extends "users/partials/_base.html" %}
+{% load crispy_forms_tags %}
+{% block settingsPageInfo %}
+
+
+
+
+<!-- Top Label-->
+<div class="row">
+    <div class="col-md-10">
+        <h3>Public Profile</h1>
+    </div>
+</div>
+
+<!-- Menus -->
+<ul class="nav nav-tabs" id="myTab">
+    <li class="active nav-item"><a href="#home" data-toggle="tab" class="nav-link">Name</a></li>
+    <li class="nav-item"><a href="#messages" data-toggle="tab" class="nav-link">Bio</a></li>
+    <li class="nav-item"><a href="#settings" data-toggle="tab" class="nav-link">Social</a></li>
+</ul>
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="home">
+        <div class="form-group">
+            <div class="tab-pane" id="settings">
+                <br>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <label for="first_name">
+                        <h4>First name</h4>
+                    </label>
+
+                    <label for="last_name">
+                        <h4>Last name</h4>
+                    </label>
+
+
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Update</button>
+                    </div>
+            </div>
+        </div>
+        <br>
+        <hr>
+    </div>
+
+    <!--/tab-pane-->
+    <div class="tab-pane" id="messages">
+        <br>
+        <label for="last_name">
+            <h4>Bio</h4>
+        </label>
+
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

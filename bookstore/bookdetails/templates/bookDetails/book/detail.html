@@ -1,0 +1,184 @@
+<!--CODE WRITTEN BY DEAN-ANNA GAYLE-->
+<!-- Inherit from the bookDetails' base.html -->
+{% extends "bookDetails/base.html" %}
+<!-- Load crispy forms functionality -->
+{% load crispy_forms_tags %}
+<!-- Load from static folder -->
+{% load static %}
+
+
+{% block body %}
+<div class="container">
+
+
+    <!-- Top BreadCrumb -->
+    <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb arr-right bg-light ">
+        <li class="breadcrumb-item "><a href="{% url "bookDetails:book_list" %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ book.book_name }}</li>
+      </ol>
+    </nav>
+
+        <!-- Body of book detail page -->
+		<div class="primary-block clearfix">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="book-cover book detail-book-cover">
+						<img src="{% if book.book_cover %}{{ book.book_cover.url }}
+                     {% else %}NO IMAGE{% endif %}" class="img-responsive" alt="">
+						<div class="fade"></div>
+					</div><!-- /.book-cover -->
+				</div><!-- /.col -->
+
+
+				<div class="col-sm-8">
+					<div class="book-detail-header">
+						<h2 class="book-title">{{ book.book_name }}</h2>
+						<p class="book-author">By <span class="book-author-name">{{ author.author_name }}</span></p>
+                        <p>
+						{% if book.avg_rating == 0.0 %}
+							No ratings yet
+						{% else %}
+							Average Rating: {{ book.avg_rating }}<span class="fa fa-star checked text-warning"></span></p>
+						{% endif %}
+						</p>
+					</div><!-- /.book-detail-header -->
+
+					<div class="book-detail-body">
+
+						<div class="detail-cart-button row clearfix">
+							<div class="pull-left col-md-6 col-sm-5 col-xs-12">
+								<div class="detail-book-price">
+                                    <button type="button" class="btn btn-warning btn-rounded">$ {{ book.price }}</button>
+								</div><!-- /.detail-book-price -->
+							</div><!-- /.pull-left -->
+
+							<div class="pull-right col-md-6 col-sm-7 col-xs-12">
+								<div class="row product-actions">
+								{% if user.is_authenticated %}
+                                    <!-- Add to Cart Button -->
+                                    <form action="{% url "cart:addToCart" book.id %}" method="post">
+                                        {{ ATC_book_form }}
+                                        {% csrf_token %}
+                                        <input type="submit" value="Add to Cart">
+                                    </form>
+								{% endif %}
+                                    <!-- Add to Wishlist -->
+                                    {% if user.is_authenticated %}
+                                    <div class="addToWishlist">
+                                        {% if myLists.count > 0 %}
+                                            Select Wishlist:
+                                            <form action="{% url 'wishlist:addBookFromBookDetails' book.id %}" method="post">
+                                                {% csrf_token %}
+                                                <select name="selectedList">
+                                                {% for list in myLists %}
+                                                    <option value="{{ list.id }}">{{ list.name }}</option>
+                                                {% endfor %}
+                                                </select>
+                                                <button type="submit">Add to Wishlist</button>
+                                            </form>
+										{% else %}
+                                            You do not have any wish lists. Create one
+                                            <a href="/wishlist/">here</a>.
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                    <!-- Submit a Review -->
+                                    {% if user.is_authenticated %}
+                                        <a href = "{% url 'bookDetails:add_review' book.book_name book.slug %}" class ="btn btn-primary">Create a Customer Review</a>
+									{% else %}
+                                        <p class="bg-warning">You must be signed to leave a review.</p>
+                                    {% endif %}
+								</div><!-- /.row -->
+							</div><!-- /.pull-right -->
+						</div><!-- /.detail-cart-button -->
+
+					    <div class="clearfix"></div>
+
+						<div class="product-description">
+							<h3>Quick Overview</h3>
+							<p>{{ book.book_description }}</p>
+						</div><!-- /.product-description -->
+
+					</div><!-- /.book-detail-body -->
+				</div><!-- /.col -->
+			 </div><!-- /.row -->
+
+
+            <!-- Enlarge photo button -->
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">Enlarge Photo</button>
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{% if book.book_cover %}{{ book.book_cover.url }}
+                                 {% else %}NO IMAGE{% endif %}" class="img-responsive" alt="">
+                    </div>
+                </div>
+              </div>
+            </div>
+
+
+            <br><br><br>
+
+            <!-- Bottom Nav Bar -->
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-1-tab" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-1" aria-selected="true">Product Details</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-2-tab" data-toggle="pill" href="#pills-2" role="tab" aria-controls="pills-2" aria-selected="false">About this Author</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-3-tab" data-toggle="pill" href="#pills-3" role="tab" aria-controls="pills-3" aria-selected="false">Shipping Policy</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" id="pills-4-tab" data-toggle="pill" href="#pills-4" role="tab" aria-controls="pills-4" aria-selected="false">Reviews and Ratings</a>
+                  </li>
+            </ul>
+            <hr>
+            <div class="tab-content" id="pills-tabContent">
+                  <!-- Product Details Info -->
+                  <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-1-tab">
+                      <h3><div class="text-primary">Book Information</div></h3>
+                      <p class="book-genre">GENRE: {{ book.book_genre }}</p>
+                      <p class="publishing-info">PUBLISHER: {{ book.publishing_info }}</p>
+                  </div>
+                  <!-- About this Author Info -->
+                  <div class="tab-pane fade" id="pills-2" role="tabpanel" aria-labelledby="pills-2-tab">
+                      <h3><div class="text-primary">{{ author.author_name }}</div></h3>
+                      <p>{{ book.author_bio }}</p>
+                  </div>
+                  <!-- Shipping Tab Info -->
+                  <div class="tab-pane fade" id="pills-3" role="tabpanel" aria-labelledby="pills-3-tab">
+                      <h3><div class="text-primary">Shipping Information</div></h3>
+                      <p>We do our best to estimate delivery dates for your purchase.<br><br>The estimated date of delivery&nbsp;of your order and the cost of shipping depends on which Delivery Speed you select during Checkout,&nbsp;which&nbsp;factors in item availability, processing time, and transit time.<br><br>
+                      <span style="FONT-WEIGHT: bold">Please note:</span> You may receive your items on different days and in multiple boxes. When your items ship, you will receive a confirmation email with tracking information you can use to track&nbsp;them online.</p>
+                            <div class="container">
+                                <img alt="Image" src="https://cdn.baymard.com/research/media_files/attachments/21057/original/research-media-file-d4658cef31ce11cff427afacde24ab6c.jpg" style="width: 400px; height: 208px;">
+                            </div>
+                      <br>
+                      <p>Business Days are Monday through Friday, excluding holidays observed by the Post Office and UPS, such as New Year's Day, Presidents' Day, Memorial Day, Independence Day, Labor Day, Thanksgiving, and Christmas.<br>
+                      <br>Delivery dates are not guaranteed. Sometimes the availability of the items in your order may change while we are processing your order. In this event, you will receive an email notifying you of a delay, and the remaining eligible items in your order will be shipped as scheduled.</p>
+                  </div>
+				  <div class="tab-pane fade " id="pills-4" role="tabpanel" aria-labelledby="pills-4-tab">
+                      <h3><div class="text-primary">Customer Reviews</div></h3>
+                      <div class="reviews">
+					    {% if book.review.all %}
+                            {% for review in book.review.all%}
+                                        <p>Reviewed by {{review.display_name}}:</p>
+										<p>Message: {{review.message}}</p>
+										<p>Rated: {{review.rating}} <span class="fa fa-star checked text-warning"></span></p>
+                                        <p>Created on: {{ review.created_on}}</p>
+										<hr>
+                            {% endfor %}
+						{% else %}
+							<p>No reviews yet</p>
+                        {% endif %}
+					  </div>
+                  </div>
+            </div>
+            <hr>
+    </div>
+</div>
+{% endblock %}

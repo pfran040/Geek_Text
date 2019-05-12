@@ -1,0 +1,69 @@
+{% extends "users/partials/_base.html" %}
+{% load crispy_forms_tags %}
+{% block settingsPageInfo %}
+
+
+
+<div class="card">
+    <div class="card-body">
+        <!-- Top Label-->
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Profile overview</h4>
+                <hr>
+            </div>
+        </div>
+
+
+
+
+        <div class="tab-content">
+            <div class="form-group">
+
+
+                <br>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Personal information section -->
+                    <label for="first_name">
+                        <h5>First name</h4>
+                    </label>
+                    {{ user_ProfileForm.first_name |as_crispy_field }}
+                    <label for="last_name">
+                        <h5>Last name</h4>
+                    </label>
+                    {{ user_ProfileForm.last_name |as_crispy_field }}
+
+                    <!-- Nickname section -->
+                    <p>
+                        <label for="first_name">
+                            <h5>Nickname</h4>
+                        </label>
+                        {{ user_NicknameForm.nick_name |as_crispy_field }}
+                    </p>
+
+                    <!-- Bio section -->
+                    <p>
+                        <label for="first_name">
+                            <h5>Bio</h4>
+                        </label>
+                        {{ user_BioForm.bio |as_crispy_field }}
+                    </p>
+
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

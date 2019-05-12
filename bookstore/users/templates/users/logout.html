@@ -1,0 +1,20 @@
+<!-- This is saying: inherit everything from __base.html -->
+{% extends "storePage/partials/__base.html" %}
+{% load crispy_forms_tags %}
+<!-- To beautify the form at signup -->
+{% block body %}
+
+<p><br>
+    <main role="main" class="container">
+        <div class="content-section" style="margin-left: 25%; margin-right: 25%;">
+            <h2>You have been logged out</h2>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    <a href="{% url 'login' %}">Log In Again</a>
+                </small>
+            </div>
+        </div>
+    </main>
+
+
+    {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "users/partials/_base.html" %}
+{% load crispy_forms_tags %}
+{% block settingsPageInfo %}
+
+
+
+
+<div class="card">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Change password</h4>
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<form method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+
+					{{ u_Passform|crispy }}
+
+					<div class="form-group">
+						<button class="btn btn-outline-info" type="submit">Update</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+{% endblock %}

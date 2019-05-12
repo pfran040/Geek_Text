@@ -1,0 +1,26 @@
+<!-- Inherit from cart's info.html -->
+{% extends "cart/info.html" %}
+<!-- Load crispy forms functionality -->
+{% load crispy_forms_tags %}
+<!-- Load from static folder -->
+{% load static %}
+
+{% block title %}
+    <h1 style="text-align:center">
+        --- CHECKOUT ---
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Thank the user for their purchase -->
+    <h2 style="text-align: center">
+        Thank you for your purchase!
+    </h2>
+
+    <!-- Button that takes you back to the Catalog -->
+    <a href="{% url "bookDetails:book_list" %}" class="button light">
+        Back to Catalog
+    </a>
+
+{% endblock %}

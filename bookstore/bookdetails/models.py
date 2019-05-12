@@ -1,8 +1,27 @@
+# =====================================================
+# CODE AUTHOR: RAUL ESPINOSA
+# The code that models the books themselves. I made this
+# so that I could begin to fully implement the cart
+# functionality, since at the time of writing this
+# (2/9/2019) the books package does not yet have a
+# functioning model for the books themselves and the
+# book-related HTML catalog pages are hard-coded and thus
+# cannot be used to derive info required by the cart
+# (book price, name, etc)
+# =====================================================
+
+# Necessary import for working with models
 from django.db import models
 
-# Create your models here.
+# For use with the get_absolute_url methods
+from django.urls import reverse
+from users.models import Profile
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-#Book and Author model by Raul Espinoza
+# This class models book authors, which have a many-to-many relationship
+# with books: a book can have multiple authors and authors can write multiple
+# books
+
 class Author(models.Model):
     # The author's name. Since this is only a single author,
     # their name probably won't be longer than 70 characters
@@ -29,6 +48,16 @@ class Author(models.Model):
     # Seems to be a Python "toString" analogue.
     def __str__(self):
         return self.author_name
+
+    # For use when a user searches for books by author. Returns the URL.
+    def get_absolute_url(self):
+        return reverse('bookDetails:book_list_by_author', args=[self.slug])
+
+
+# The model that represents an individual Book. I've copy-pasted
+# the existing code of the makeshift
+# Book class I had made in the models.py file of my cart package,
+# since that had most of what I needed
 
 class Book(models.Model):
     # The name of the book; max_length specified as
@@ -94,10 +123,12 @@ class Book(models.Model):
 
 
 class Review(models.Model):
-    book        = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='review')
-    name        = models.CharField(max_length=50, default="")
-    rating      = models.IntegerField(default=3)
-    message     = models.CharField(max_length=150)
+    book        = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='review')  #Each review is attached to a book
+    user        = models.ForeignKey(Profile, on_delete=models.CASCADE, default="")
+    display_name= models.CharField(max_length=50, default="")                               #Display name of review
+    rating      = models.IntegerField(default=3, validators=[MaxValueValidator(5),
+                                                             MinValueValidator(1)])         #Rating value of star rating
+    message     = models.CharField(max_length=150)                                          #Message body capped at 150 characters
     created_on  = models.DateTimeField(auto_now_add=True)
     approved    = models.BooleanField(default=False)
 
@@ -106,5 +137,11 @@ class Review(models.Model):
         self.save()
     def __str__(self):
         return self.message
-    def user(self):
-        return self.name
+    def name(self):
+        return self.display_name
+
+#WIP; Should be able to interact with the cart and save what a user has purchased.
+class Purchase(models.Model):
+    book            = models.ForeignKey(Book, on_delete=models.CASCADE)
+    User            = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    has_purchased   = models.BooleanField(default=False, blank=True)

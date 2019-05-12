@@ -1,0 +1,44 @@
+<!-- This is saying: inherit everything from __base.html -->
+{% extends "storePage/partials/__base.html" %}
+<!-- Main base template which contains header and footer too -->
+{% load crispy_forms_tags %}
+<!-- To beautify the form at signup -->
+{% block body %}
+
+<div class="container bootstrap snippet">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group ">
+                <label class="card-header">Personal Settings</label>
+                <a href="{% url 'settings:profile-settings' %}" class="list-group-item list-group-item-action {% if 'profile' in request.resolver_match.url_name %} active {% endif %}"><span
+                        class="fa fa-cog"></span> Profile</a>
+                <a href="{% url 'settings:account-settings' %}" class="list-group-item list-group-item-action {% if 'account' in request.resolver_match.url_name %} active {% endif %}"><span
+                        class="fa fa-cog"></span> Account</a>
+                <a href="{% url 'settings:security-settings' %}" class="list-group-item list-group-item-action {% if 'security' in request.resolver_match.url_name %} active {% endif %}"><i
+                        class="fas fa-envelope"></i> Security</a>
+
+                <a href="{% url 'settings:billing-settings' %}" class="list-group-item list-group-item-action {% if 'billing' in request.get_full_path %} active {% endif %}"><span
+                        class="fa fa-credit-card"></span> Billing</a>
+
+            </div>
+        </div>
+        <!-- Center-right navBar-->
+        <div class="col-md-9" style="margin-bottom: 20px;">
+            {% block settingsPageInfo %} {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

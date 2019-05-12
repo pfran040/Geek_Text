@@ -1,0 +1,53 @@
+{% extends "storePage/partials/__base.html" %}
+<!-- This is saying: inherit everything from __base.html -->
+{% block body %}
+{% load static %}
+
+<header>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+        }
+    </style>
+
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
+            <div class="thumbnail">
+                <img src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+                <b>Genre, Publishing info, Average book rating</b><br>
+                <label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                    the
+                    industry's
+                    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                    scrambled it to make a
+                    type specimen book. It has survived not only five centuries, but also the leap into electronic
+                    typesetting,
+                    remaining
+                    essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                    containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software like Aldus PageMaker including
+                    versions of Lorem
+                    Ipsum.
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6" style="margin-left: 200px;">
+            <h1>Book Name</h1>
+            <b>Genre: </b> Accion
+            <br><b>Publishing info:</b> None<br>
+            <b>Author:</b> Dean-Anna<br>
+            <label></label>
+        </div>
+    </div>
+</div>
+
+<p>
+    <br>
+</p>
+
+
+{% endblock %}

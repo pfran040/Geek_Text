@@ -1,0 +1,25 @@
+<!-- Inherit from the store page's main __base.html -->
+{% extends "storePage/partials/__base.html" %}
+<!-- Load crispy forms functionality -->
+{% load crispy_forms_tags %}
+<!-- Load from the static folder -->
+{% load static %}
+
+{% block body %}
+    {% block title %}{% endblock %}
+
+    <div id="header">
+        <!-- This line doesn't need to be here. Maybe I should put it
+        in list.html, or remove it altogether. -->
+        <!-- <h1>BOOK LIST</h1> -->
+    </div>
+    <div id="subheader">
+        <br>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+
+{% endblock %}

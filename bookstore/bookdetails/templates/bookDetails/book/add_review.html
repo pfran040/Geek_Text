@@ -1,0 +1,106 @@
+<!-- Inherit from the store page's main __base.html -->
+{% extends "bookDetails/base.html" %}
+<!-- Load crispy forms functionality -->
+{% load crispy_forms_tags %}
+<!-- Load from static folder -->
+{% load static %}
+
+{% block body %}
+
+<style>
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.star-rating input:hover ~ input:checked + label {
+  opacity: 0;
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rating > input:checked ~ label {
+    color: #f70;
+    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+}
+</style>
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+	
+	
+	
+	<h3 div class="text-primary">Add a Review</h3>
+	<form method='POST'>{% csrf_token %}
+	<fieldset class="rating">
+		<input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
+		<input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
+		<input type="radio" id="star3" name="rating" value="3" checked /><label for="star3">3 stars</label>
+		<input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
+		<input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
+	</fieldset>
+	<br>
+	<br>
+	{{ form | crispy}}
+	<label>Display name for your review:</label>
+	<br>
+	<input type="radio" name="name_select" value="Username"> Username
+	<input type="radio" name="name_select" value="Nickname"> Nickname
+	<input type="radio" name="name_select" value="Anonymous"> Anonymous <br><br>
+	<label>(Note: If you do not have a nickname, your username will be displayed)</label>
+	<br>
+	
+
+	<button class = "btn btn-success" type='submit'>Submit Review</button>
+
+	</form>
+	
+{% endblock %}

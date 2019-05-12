@@ -1,0 +1,53 @@
+{% extends "users/partials/_base.html" %}
+{% load crispy_forms_tags %}
+{% block settingsPageInfo %}
+
+
+<div class="card style=" margin-bottom: 20px;"">
+    <div class="card-body" style=" padding-bottom: 0px;">
+
+        {% if address_slug is None %}
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Add a new address</h4>
+                <hr>
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{user_AddressForm |crispy}}
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Add address</button>
+            </div>
+        </form>
+
+        {% else %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Edit your address</h4>
+                <hr>
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{user_AddressForm |crispy}}
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Save changes</button>
+            </div>
+        </form>
+        {% endif %}
+
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{DeleteAddressForm |crispy}}
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

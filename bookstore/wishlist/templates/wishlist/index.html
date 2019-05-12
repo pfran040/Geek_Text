@@ -1,0 +1,478 @@
+<!-- This is saying: inherit everything from __base.html -->
+<!DOCTYPE html>
+{% extends "../storePage/partials/__base.html" %}
+{% load crispy_forms_tags %}
+<!-- The code from the index page that will be added to the __base template -->
+{% block body %}
+<head>
+    <style>
+        .alignLeft{
+            float: left;
+            overflow: hidden;
+        }
+        .alignRight{
+            float: right;
+            overflow: hidden;
+        }
+        .container{
+            padding: 15px;
+            overflow: hidden;
+        }
+        .header{
+            border-bottom-style: solid;
+            overflow: hidden;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+        .content{
+            width: 72%;
+            height: auto;
+        }
+        .lists{
+            width: 28%;
+            text-align: center;
+            padding: 10px;
+        }
+        .listItem{
+            width: auto;
+            overflow: hidden;
+            padding: 10px;
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+        }
+        /* Used for making the list names look like links. */
+        .fake-link {
+            cursor: pointer;
+        }
+        /* Book Information */
+        .wishlistItem {
+            padding: 3%;
+            overflow: hidden;
+            overflow-y: visible;
+        }
+        .bookCover {
+            width: 140px;
+            height: 225px;
+        }
+        .bookInfo {
+            font-size: 15px;
+            padding: 20px;
+            height: 225px;
+            overflow: hidden;
+        }
+        .bookName {
+            font-size: 25px;
+            font-weight: bolder;
+            text-decoration: underline;
+        }
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+        .shopMoveDelete {
+        }
+        /*Use for aligned 3 elements in one line*/
+        .oneOfThree {
+            float: left;
+            width: 25%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alignLeft">
+                <h1>{{ user.username }}'s Wish Lists</h1>
+            </div>
+            <!-- Create List -->
+            <div class="alignRight">
+                <form action="{% url "wishlist:createList" %}" method="post">
+                {% csrf_token %}
+                    <div id="newList">
+                        <input id="listName" name="listName" type="text" placeholder="Enter List Name Here"
+                               maxlength="25" required>
+                        <button type="submit" class="btn btn-outline-success" title="Enter Name of Wish List to Create">Create List</button>
+                    </div>
+                    <div id="noNewList">
+                        <button class="btn btn-outline-secondary" disabled>Create List</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <!-- If No Lists Exist -->
+            <div id="noLists">
+                <br>
+                <h1 align="center">You do not have any wish lists. Please create one.</h1>
+            </div>
+            <!-- Lists Names and editing and list information (excluding books associated with lists) -->
+            <div id="listContent" class="lists alignLeft">
+                    {% for list in myLists %}
+                        <div class="listItem" id="t{{ list.id }}">
+                            <!-- Edit List Name -->
+                            <div class="alignLeft" style="padding-right: 5px;">
+                                <div id="pencil{{ list.id }}">
+                                    <button type="button" title="Edit Wishlist Name" class="btn btn-anchor btn-sm"
+                                    onclick="showEditListButtons({{ list.id }})">
+                                        &#9998;</button>
+                                </div>
+                                <!-- NEED TO WRITE JAVASCRIPT TO HIDE THIS AND BRING IT BACK WHEN NECESSARY -->
+                                <div id="acceptCancel{{ list.id }}" class="alignLeft">
+                                    <form action="{% url 'wishlist:rename' list.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input id="newName" name="newName" type="text" placeholder="{{ list.name }}"
+                                            maxlength="25" required>
+                                        <button type="submit" title="Accept" class="btn btn-anchor btn-sm">
+                                        &#10003;</button>
+                                        <button type="reset" title="Cancel" class="btn btn-anchor btn-sm"
+                                                onclick="resetEditListButtons({{ list.id }})">&#10007;</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- List Names -->
+                            <div class="alignLeft">
+                                <span class="fake-link btn-link" id="{{ list.id }}" onclick="showBooks(this.id)">
+                                    {{ list.name }}</span>
+                            </div>
+                            <!-- Delete List Button -->
+                            <div class="alignRight" >
+                                <form action="{% url 'wishlist:deleteList' list.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="close" aria-label="Close" title="Delete Wish List">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+            <!-- BOOKS ASSOCIATED WITH THE LISTS -->
+            <div class="alignRight content" id="content">
+                <div id="firstContent" class="{{ firstList.id }}">
+                    {% if not firstBooks %}
+                        <h2 align="center">This wish list is empty.</h2>
+                    {% else %}
+                        {% for books in firstBooks %}
+                            <div class="wishlistItem border-bottom">
+                                <div class="alignLeft bookCover" id="bookImage">
+                                    {% if books.book_cover %}
+                                        <img src="{{ books.book_cover.url }}">
+                                    {% else %}
+                                        <img src="http://lgimages.s3.amazonaws.com/nc-md.gif">
+                                {% endif %}
+                                </div>
+                                <div class="bookInfo">
+                                    <div class="bookName">
+                                        {{ books.book_name }}
+                                    </div>
+                                    <div class="authorName">
+                                        by {{ books.book_author }}
+                                    </div>
+                                    <div class="bookDescription">
+                                        "{{ books.book_description }}"
+                                    </div>
+                                    <div class="rating">
+                                        {{ books.avg_rating }}/5.0 <span class="fa fa-star checked text-warning"></span>
+                                    </div>
+                                    <div class="price">
+                                        ${{ books.price }}
+                                    </div>
+                                </div>
+                                <div class="shopMoveDelete">
+                                    <div class="oneOfThree">
+                                    <!-- Move to Cart -->
+                                        <!-- DOES NOT WORK - can create own function that deletes and then uses this cart function
+                                        <form action="{% url "cart:addToCart" books.id %}" method="post">
+                                            {{ ATC_book_form }}
+                                            {% csrf_token %}
+                                            <input type="submit" value="Add to Cart">
+                                        </form>
+                                        -->
+                                        <form action="{% url 'wishlist:moveToCart' firstList.id books.id %}" method="post">
+                                            {{ ATC_book_form }}
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-link">Add To Cart</button>
+                                        </form>
+                                    </div>
+                                    <!-- Move Book to Different Wish List -->
+                                    <div class="dropup oneOfThree">
+                                        {% if myListsCount > 1 %}
+                                            <button class="btn-link dropdown-toggle" type="button" data-toggle="dropdown">Move Wish List
+                                              <span class="caret"></span></button>
+                                              <ul class="dropdown-menu">
+                                                  {% for list in myLists %}
+                                                      {% if list.id != firstList.id %}
+                                                          <form action="{% url 'wishlist:moveBook' firstList.id list.id books.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <li><button type="submit" class="btn btn-link btn-anchor"
+                                                                  value="{{ list.id }}">{{ list.name }}</button></li>
+                                                          </form>
+                                                      {% endif %}
+                                                  {% endfor %}
+                                              </ul>
+                                        {% else %}
+                                            <button class="btn-link dropdown-toggle" type="button" data-toggle="dropdown" disabled>Move Wish List
+                                              <span class="caret"></span></button>
+                                        {% endif %}
+                                    </div>
+                                    <!-- Delete Book -->
+                                    <div class="oneOfThree">
+                                        <form action="{% url 'wishlist:deleteBook' firstList.id books.id %}" method="post">
+                                            {% csrf_token %}
+                                             <button type="submit" class="btn-link">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div id="secondContent" class="{{ secondList.id }}">
+                    {% if not secondBooks %}
+                        <h2 align="center">This wish list is empty.</h2>
+                    {% else %}
+                        {% for books in secondBooks %}
+                            <div class="wishlistItem border-bottom">
+                                <div class="alignLeft bookCover" id="bookImage">
+                                    {% if books.book_cover %}
+                                        <img src="{{ books.book_cover.url }}">
+                                    {% else %}
+                                        <img src="http://lgimages.s3.amazonaws.com/nc-md.gif">
+                                {% endif %}
+                                </div>
+                                <div class="bookInfo">
+                                    <div class="bookName">
+                                        {{ books.book_name }}
+                                    </div>
+                                    <div class="authorName">
+                                        by {{ books.book_author }}
+                                    </div>
+                                    <div class="bookDescription">
+                                        "{{ books.book_description }}"
+                                    </div>
+                                    <div class="rating">
+                                        {{ books.avg_rating }}/5.0 <span class="fa fa-star checked text-warning"></span>
+                                    </div>
+                                    <div class="price">
+                                        ${{ books.price }}
+                                    </div>
+                                </div>
+                                <div class="shopMoveDelete">
+                                    <!-- Move to Cart -->
+                                    <div class="oneOfThree">
+                                        <form action="{% url 'wishlist:moveToCart' secondList.id books.id %}" method="post">
+                                            {{ ATC_book_form }}
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-link">Add To Cart</button>
+                                        </form>
+                                    </div>
+                                    <!-- Move Book to Different Wish List -->
+                                    <div class="dropup oneOfThree">
+                                      <button class="btn-link dropdown-toggle" type="button" data-toggle="dropdown">Move Wish List
+                                      <span class="caret"></span></button>
+                                      <ul class="dropdown-menu">
+                                          {% for list in myLists %}
+                                              {% if list.id != secondList.id %}
+                                                  <form action="{% url 'wishlist:moveBook' secondList.id list.id books.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <li><button type="submit" class="btn btn-link btn-anchor"
+                                                          value="{{ list.id }}">{{ list.name }}</button></li>
+                                                  </form>
+                                              {% endif %}
+                                          {% endfor %}
+                                      </ul>
+                                    </div>
+                                    <!-- Delete Book -->
+                                    <div class="oneOfThree">
+                                        <form action="{% url 'wishlist:deleteBook' secondList.id books.id %}" method="post">
+                                            {% csrf_token %}
+                                             <button type="submit" class="btn-link">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div id="thirdContent" class="{{ thirdList.id }}">
+                    {% if not thirdBooks %}
+                        <h2 align="center">This wish list is empty.</h2>
+                    {% else %}
+                        {% for books in thirdBooks %}
+                            <div class="wishlistItem border-bottom">
+                                <div class="alignLeft bookCover" id="bookImage">
+                                    {% if books.book_cover %}
+                                        <img src="{{ books.book_cover.url }}">
+                                    {% else %}
+                                        <img src="http://lgimages.s3.amazonaws.com/nc-md.gif">
+                                {% endif %}
+                                </div>
+                                <div class="bookInfo">
+                                    <div class="bookName">
+                                        {{ books.book_name }}
+                                    </div>
+                                    <div class="authorName">
+                                        by {{ books.book_author }}
+                                    </div>
+                                    <div class="bookDescription">
+                                        "{{ books.book_description }}"
+                                    </div>
+                                    <div class="rating">
+                                        {{ books.avg_rating }}/5.0 <span class="fa fa-star checked text-warning"></span>
+                                    </div>
+                                    <div class="price">
+                                        ${{ books.price }}
+                                    </div>
+                                </div>
+                                <div class="shopMoveDelete">
+                                    <!-- Move to Cart -->
+                                    <div class="oneOfThree">
+                                        <form action="{% url 'wishlist:moveToCart' thirdList.id books.id %}" method="post">
+                                            {{ ATC_book_form }}
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-link">Add To Cart</button>
+                                        </form>
+                                    </div>
+                                    <!-- Move Book to Different Wish List -->
+                                    <div class="dropup oneOfThree">
+                                      <button class="btn-link dropdown-toggle" type="button" data-toggle="dropdown">Move Wish List
+                                      <span class="caret"></span></button>
+                                      <ul class="dropdown-menu">
+                                          {% for list in myLists %}
+                                              {% if list.id != thirdList.id %}
+                                                  <form action="{% url 'wishlist:moveBook' thirdList.id list.id books.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <li><button type="submit" class="btn btn-link btn-anchor"
+                                                          value="{{ list.id }}">{{ list.name }}</button></li>
+                                                  </form>
+                                              {% endif %}
+                                          {% endfor %}
+                                      </ul>
+                                    </div>
+                                    <!-- Delete Book -->
+                                    <div class="oneOfThree">
+                                        <form action="{% url 'wishlist:deleteBook' thirdList.id books.id %}" method="post">
+                                            {% csrf_token %}
+                                             <button type="submit" class="btn-link">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div> <!--Container closed-->
+</body>
+    <!-- Javescript used -->
+    <script>
+        //function to display the create list button based on how many lists the user has.
+        //Also will display a message when no lists exists.
+        function createList(){
+            let x = document.getElementById("newList");
+            let y = document.getElementById("noNewList");
+            let a = document.getElementById("listContent");
+            let b = document.getElementById("noLists");
+            let c = document.getElementById("content")
+            {% if myListsCount == 0 %}{
+                a.style.display = "none";
+                y.style.display = "none";
+                c.style.display = "none";
+            }
+            {% elif myListsCount > 2 %}{
+                x.style.display = "none";
+                b.style.display = "none";
+            }
+            {% else %}{
+                y.style.display = "none";
+                b.style.display = "none";
+            }
+            {% endif %}
+        }
+        function showEditListButtons(list_id){
+            //show the edit list buttons and input field
+            let e = document.getElementById("acceptCancel"+list_id);
+            e.style.display = "block";
+            //hide list name
+            let listName = document.getElementById(list_id);
+            listName.style.display = "none";
+            //hide pencil button
+            let pencil = document.getElementById("pencil"+list_id);
+            pencil.style.display = "none";
+        }
+        //function to hide the list buttons once they have been shown.
+        function resetEditListButtons(list_id){
+            //hide the edit list buttons and input field
+            let e = document.getElementById("acceptCancel"+list_id);
+            e.style.display = "none";
+            //show list name
+            let listName = document.getElementById(list_id);
+            listName.style.display = "block";
+            //show pencil button
+            let pencil = document.getElementById("pencil"+list_id);
+            pencil.style.display = "block";
+        }
+        //function to set all edit buttons to not be shown on page load
+        function allEditListButtons(){
+            let e;
+            {% for list in myLists %}
+                e = document.getElementById("acceptCancel"+{{ list.id }});
+                e.style.display = "none";
+            {% endfor %}
+        }
+        function resetColor(){
+            let m;
+            {% for list in myLists %}
+                m = document.getElementById("t"+{{ list.id }});
+                m.style.background = "white";
+            {% endfor %}
+        }
+        function selectColor(clicked_id){
+            resetColor();
+            let s = document.getElementById("t"+clicked_id);
+            s.style.background = "darkgrey";
+        }
+        function hide(idName){
+            let c = document.getElementById(idName);
+            c.style.display = "none";
+        }
+        //gets id of element clicked as a parameter which should be the list's id.
+        function showBooks(clicked_id){
+            allBooks();
+            selectColor(clicked_id);
+            let one = document.getElementsByClassName(clicked_id);    //get classes with this idea
+            one[0].style.display = "block";
+        }
+        function allBooks(){
+            let l;
+            {% for list in myLists %}
+            {
+                l = document.getElementsByClassName({{ list.id }});
+                l[0].style.display = "none";
+            }
+            {% endfor %}
+        }
+        //If the user has lists then by default the first one should be selected
+        {% if myListsCount > 0 %}
+            showBooks({{ firstList.id }});
+            selectColor({{ firstList.id }});
+        {% endif %}
+        {% if myListsCount < 3 %}
+            hide("thirdContent");
+            {% if myListsCount < 2 %}
+                hide("secondContent");
+            {% endif %}
+                {% if myListsCount < 1 %}
+                    hide("firstContent");
+                {% endif %}
+        {% endif %}
+        createList();
+        allEditListButtons();
+    </script>
+{% endblock %}

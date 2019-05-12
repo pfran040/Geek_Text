@@ -1,0 +1,45 @@
+<!-- This is saying: inherit everything from __base.html -->
+{% extends "storePage/partials/__base.html" %}
+{% load crispy_forms_tags %}
+<!-- To beautify the form at signup -->
+{% block body %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mx-auto">
+            <div id="first">
+                <div class="myform form ">
+                    <div class="logo mb-3">
+                        <div class="col-md-12 text-center">
+                            <h1>Join Today</h1>
+                        </div>
+                    </div>
+                    <form method="POST" name="signup">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form|crispy }}
+                        </div>
+                        <div class="col-md-12 text-center ">
+                            <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Sign up</button>
+                        </div>
+                        <div class="col-md-12 ">
+                            <div class="login-or" style="text-align: center;">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="text-center">Already have an account? <a class="ml-2" href="/login/">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

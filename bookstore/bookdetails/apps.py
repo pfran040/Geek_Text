@@ -1,5 +1,10 @@
+# =====================================================
+# CODE AUTHOR: RAUL ESPINOSA
+# The bookDetails app config file.
+# =====================================================
+
 from django.apps import AppConfig
 
 
-class BookdetailsConfig(AppConfig):
-    name = 'bookdetails'
+class BookDetailsConfig(AppConfig):
+    name = "bookDetails"

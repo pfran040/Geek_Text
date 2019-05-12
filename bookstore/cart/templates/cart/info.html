@@ -1,0 +1,132 @@
+<!-- Inherit from bookDetails' base.html -->
+{% extends "bookDetails/base.html" %}
+<!-- Load crispy forms functionality -->
+{% load crispy_forms_tags %}
+<!-- Load from static folder -->
+{% load static %}
+
+{% block title %}
+    <h1 style="text-align:center">
+        --- SHOPPING CART ---
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <h1>Your Shopping Cart</h1>
+    <table class="userCart">
+        <thead>
+            <tr>
+                <!-- List of all the attributes associated with a book that should
+                be visible from a cart -->
+                <th align="center">Image</th>
+                <th align="center">Book</th>
+                <th align="center">Amount</th>
+                <th align="center">Price</th>
+                <th align="center">Total Cost</th>
+                <th align="center">Save For Later</th>
+                <th align="center">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <!-- Iterate through the books in userCart and
+        check whether their status is "saved for later". If not,
+        render their cover, price, name, etc -->
+            {% for current in userCart %}
+                {% with book=current.book %}
+                    {% if not current.SFL %}
+                <tr>
+                    <td>
+                        <a href="{{ book.get_absolute_url }}">
+                            <img src="{% if book.book_cover %}{{ book.book_cover.url }}
+                                      {% else %}NO IMAGE{% endif %}">
+                        </a>
+                    </td>
+                    <td align="center"><a href="{{ book.get_absolute_url }}">{{ book.book_name }}</a></td>
+                    <td align="center">
+                        <form action="{% url "cart:addToCart" book.id %}" method="post">
+                            {{ current.update_amount_form.amount }}
+                            {{ current.update_amount_form.change_amount }}
+                            <input type="submit" value="Update">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                    <td class="num" align="center">${{ book.price }}</td>
+                    <td class="num" align="center">${{ current.total_price }}</td>
+                    <td align="center"><a href="{% url "cart:addToSFL" book.id %}">Save For Later</a></td>
+                    <td align="center"><a href="{% url "cart:removeFromCart" book.id %}">Remove</a></td>
+                </tr>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+
+            <!-- Table row showing the subtotal cost of items in cart. Uses
+            the get_total_price function defined in cart.py -->
+            <tr class="total"></tr>
+                <td>CART SUBTOTAL</td>
+                <td class="num">${{ userCart.get_total_price }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>
+        <!-- Button that takes you back to the Book List -->
+        <a href="{% url "bookDetails:book_list" %}" class="button light">
+            Back to Catalog
+        </a>
+        <span style="margin-left:4em"></span>
+        <!-- CHECKOUT BUTTON -->
+        <a href="{% url "cart:checkout" %}" class="button">Checkout</a>
+    </p>
+
+    <hr>
+
+    <!-- SAVED FOR LATER LIST
+    To implement this, we simply iterate through the userCart again and
+    check for books whose SFL status is set to True. We print those books'
+    covers, names, prices and offer the option to add them to the cart or
+    remove them from the SFL List (and the cart) altogether -->
+
+    <h1 style="text-align:center">
+        --- SAVED FOR LATER --
+    </h1>
+
+    <table class="SFL">
+        <thead>
+            <tr>
+                <!-- List of all the attributes associated with a book that should
+                be visible from a cart -->
+                <th align="center">Image</th>
+                <th align="center">Book</th>
+                <th align="center">Price</th>
+                <th align="center">Move to Cart</th>
+                <th align="center">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <!-- Iterate through the books in userCart and
+        check whether their status is "saved for later". If not,
+        render their cover, price, name, etc -->
+            {% for current in userCart %}
+                {% with book=current.book %}
+                    {% if current.SFL %}
+                <tr>
+                    <td>
+                        <a href="{{ book.get_absolute_url }}">
+                            <img src="{% if book.book_cover %}{{ book.book_cover.url }}
+                                      {% else %}NO IMAGE{% endif %}">
+                        </a>
+                    </td>
+                    <td align="center"><a href="{{ book.get_absolute_url }}">{{ book.book_name }}</a></td>
+                    <td class="num" align="center">${{ book.price }}</td>
+                    <td align="center"><a href="{% url "cart:removeFromSFL" book.id %}">Move to Cart</a></td>
+                    <td align="center"><a href="{% url "cart:removeFromCart" book.id %}">Remove</a></td>
+                </tr>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,215 @@
+{% extends "storePage/partials/__base.html" %}
+<!-- This is saying: inherit everything from __base.html -->
+{% block body %}
+{% load static %}
+
+<header>
+
+	<style type="text/css">
+		img {
+			width: 100%;
+		}
+	</style>
+
+</header>
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>	
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1435771112039-1e5b2bcad966?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1442406964439-e46ab8eff7c4?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1439524970634-649c37a69e5c?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1450&h=825&fit=crop&s=bfda9916c885869b43b70738693428d9">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1444090542259-0af8fa96557e?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1434543177303-ef2cc7707e0d?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1436262513933-a0b06755c784?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1439396087961-98bc12c21176?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+		<div class="col-lg-4 col-sm-6">
+			<div class="thumbnail">
+				<label>Book Name</label>
+				<img src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?dpr=2&fit=crop&fm=jpg&h=825&q=50&w=1450">
+				<b>Genre, Publishing info, Average book rating</b><br>
+				<label>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+					industry's
+					standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+					type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+					remaining
+					essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum
+					passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+					Ipsum.
+				</label>
+			</div>
+			{% if user.is_authenticated %}
+				<a href = "#" class = "btn btn-primary" role = "button">Create a Customer Review</a>
+			{% else %}
+				<p class="bg-warning">You must be signed in to comment and rate</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<p>
+	<br>
+</p>
+
+
+{% endblock %}
