@@ -20,4 +20,6 @@ Install django crispy forms: pip install --upgrade django-crispy-forms
 
 Navigate to directory that contains manage.py and run python manage.py runserver
 
+Open browser and go to http://127.0.0.1:8000 to access bookstore
+
 Users can create a profile and edit their profile and must be signed in to add a book to their shopping cart, make a wishlist, and comment and rate a book for other users.
