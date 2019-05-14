@@ -1,4 +1,4 @@
-# software_eng1_project
+# Geek Text (Software Engineer 1 Project)
 Software Engineer project that was completed with a team of 5 developers over the course of 10 weeks. 
 This project was created by Raul Espinosa, Arturo Fernandez, Tomas Gonzalez, Dean-Anna Gayle and Paul Franco.
 
