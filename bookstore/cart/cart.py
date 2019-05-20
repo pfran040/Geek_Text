@@ -51,7 +51,6 @@ class Cart(object):
     def add(self, book, amount=1, change_amount=False):
         # Get the book's ID (its Primary Key)
         book_id = str(book.id)
-        #purchse = Purchase.objects.create(book=book.id, user=request.user, has_purchased=True)
         # If the book isn't in the cart, add it (and all the requisite parameters
         # the cart has to show), as well as a parameter indicating whether
         # an item is saved for later (SFL) or not, which defaults to false

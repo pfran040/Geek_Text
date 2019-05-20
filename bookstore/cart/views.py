@@ -25,14 +25,14 @@ from users.models import Profile
 
 # This is the view that will handle adding/updating items
 
+cartBooks = []
 
 def addToCart(request, book_id):
     userCart = Cart(request)
+    cartBooks.append(book_id)
     # Attempt to get the Book that has the
     # given id
     book = get_object_or_404(Book, id=book_id)
-    user = get_object_or_404(Profile, user=request.user)
-    purchase = Purchase.objects.create(book=book, User=user, has_purchased=True)
     # Validate the form for adding the item to the cart
     form = AddToCartForm(request.POST)
 
@@ -54,10 +54,11 @@ def addToCart(request, book_id):
 
 def removeFromCart(request, book_id):
     userCart = Cart(request)
+    cartBooks.remove(book_id)
     # Same as addToCart function
     book = get_object_or_404(Book, id=book_id)
     user = get_object_or_404(Profile, user=request.user)
-    purchase = Purchase.objects.filter(book=book, User=user).delete()
+    cartBooks.remove(book_id)
     # Simply remove the specified Book
     # from the cart
     userCart.remove(book)
@@ -116,8 +117,12 @@ def cart_info(request):
 
 def checkout(request):
     userCart = Cart(request)
-
+    User = get_object_or_404(Profile, user=request.user)
+    for i in range(len(cartBooks)):
+        book = get_object_or_404(Book, id=cartBooks[i])
+        Purchase.objects.create(book=book, User=User)
     # Remove all books from the cart
     userCart.clear()
+    cartBooks.clear()
 
     return render(request, 'cart/checkout.html', {'userCart': userCart})

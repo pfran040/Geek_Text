@@ -144,4 +144,3 @@ class Review(models.Model):
 class Purchase(models.Model):
     book            = models.ForeignKey(Book, on_delete=models.CASCADE)
     User            = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    has_purchased   = models.BooleanField(default=False, blank=True)
