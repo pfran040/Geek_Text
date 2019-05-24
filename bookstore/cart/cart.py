@@ -159,6 +159,12 @@ class Cart(object):
     def get_total_price(self):
         return sum((book['price'] * book['amount']) for book in self.userCart.values() if not book['SFL'])
 
+    #Returns total number of copies of a certain book
+    def get_total_copies(self, book):
+        book_id = str(book.id)
+        return self.userCart[book_id]['amount']
+
+
     # Delete the cart from the session - this is functionally the same
     # as "emptying" it, since a new empty cart will be created the next time the
     # user adds a book to their cart

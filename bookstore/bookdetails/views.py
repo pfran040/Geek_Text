@@ -10,7 +10,7 @@ from django.shortcuts import render, get_object_or_404
 from cart.forms import AddToCartForm
 from .forms import ReviewForm
 # Import the Author and Book models from this package's models.py file
-from .models import Author, Book, Review
+from .models import Author, Book, Review, Purchase
 from wishlist.models import List
 from users.models import Profile
 from django.db.models import Avg
@@ -28,7 +28,6 @@ def book_list(request, author_slug=None):
 
     # Display all books
     books = Book.objects.all()
-
     # If an author slug was passed in, filter books displayed
     # by author name
     if author_slug:
@@ -110,3 +109,10 @@ def add_review(request, book_name, slug):
 # function to get lists for user currently on the page.
 def getLists(request):
     return List.objects.filter(user=request.user.profile).distinct()
+'''
+#FIXME
+def getBestSellers(request, book_name):
+    bestSellers = []
+    books = Book.objects.all
+    purchseCount = Purchase.objects.filter(book=book_name).count()
+'''

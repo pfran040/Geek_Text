@@ -25,7 +25,7 @@ from users.models import Profile
 
 # This is the view that will handle adding/updating items
 
-cartBooks = []
+cartBooks = []  #Store ids of multiples books that are in the shopping cart
 
 def addToCart(request, book_id):
     userCart = Cart(request)
@@ -57,7 +57,6 @@ def removeFromCart(request, book_id):
     cartBooks.remove(book_id)
     # Same as addToCart function
     book = get_object_or_404(Book, id=book_id)
-    user = get_object_or_404(Profile, user=request.user)
     cartBooks.remove(book_id)
     # Simply remove the specified Book
     # from the cart
@@ -119,10 +118,11 @@ def checkout(request):
     userCart = Cart(request)
     User = get_object_or_404(Profile, user=request.user)
     for i in range(len(cartBooks)):
-        book = get_object_or_404(Book, id=cartBooks[i])
-        Purchase.objects.create(book=book, User=User)
+        book = get_object_or_404(Book, id=cartBooks[i])     #Get book using ids
+        for j in range(userCart.get_total_copies(book)):    #Check if user bought more than one book
+            Purchase.objects.create(book=book, User=User)
     # Remove all books from the cart
     userCart.clear()
-    cartBooks.clear()
+    cartBooks.clear()   #Clear list
 
     return render(request, 'cart/checkout.html', {'userCart': userCart})

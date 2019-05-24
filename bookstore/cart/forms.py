@@ -22,7 +22,7 @@ class AddToCartForm(forms.Form):
     # book or more than 99 to his
     # cart at once
     amount = forms.TypedChoiceField(
-        choices=[(i, str(i)) for i in range(1, 100)],
+        choices=[(i, str(i)) for i in range(1, 11)],
         coerce=int
     )
 
