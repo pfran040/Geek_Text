@@ -119,8 +119,18 @@ def checkout(request):
     User = get_object_or_404(Profile, user=request.user)
     for i in range(len(cartBooks)):
         book = get_object_or_404(Book, id=cartBooks[i])     #Get book using ids
-        for j in range(userCart.get_total_copies(book)):    #Check if user bought more than one book
-            Purchase.objects.create(book=book, User=User)
+        total_copies = userCart.get_total_copies(book)      #Total copies of each book in the cart
+        if Purchase.objects.filter(book=book, User=User):   #Check if user has already bought book
+            if total_copies > 0:
+                purchase = get_object_or_404(Purchase, book=book, User=User)
+                purchase.amount = purchase.amount + total_copies                        #Add total copies to amount user has bought
+                purchase.save()
+        else:
+            if userCart.get_total_copies(book) > 1:                                     #Check if user wants to buy more than one copy
+                Purchase.objects.create(book=book, User=User, amount = (total_copies))  #Create purchase with total copies
+            else:
+                Purchase.objects.create(book=book, User=User)                           #Create the one copy of a book
+
     # Remove all books from the cart
     userCart.clear()
     cartBooks.clear()   #Clear list

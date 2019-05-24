@@ -51,4 +51,4 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ['book', 'User']
+    list_display = ['book', 'User', 'amount']

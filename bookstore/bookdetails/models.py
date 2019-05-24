@@ -140,7 +140,8 @@ class Review(models.Model):
     def name(self):
         return self.display_name
 
-#WIP; Should be able to interact with the cart and save what a user has purchased.
+#WIP, should be moved to its own app. Here for simplicity
 class Purchase(models.Model):
-    book            = models.ForeignKey(Book, on_delete=models.CASCADE)
-    User            = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    book            = models.ForeignKey(Book, on_delete=models.CASCADE)                    #Each purchase has a book
+    User            = models.ForeignKey(Profile, on_delete=models.CASCADE)                 #Only users can purchase books
+    amount          = models.IntegerField(default=1)                                       #Amount of times user purchases a specific book

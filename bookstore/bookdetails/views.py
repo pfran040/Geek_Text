@@ -40,8 +40,6 @@ def book_list(request, author_slug=None):
                                                           'books': books})
 
 # Display a single book at a time
-
-
 def book_info(request, book_name, slug):
     # Attempt to retrieve the book requested based on the provided
     # name and slug
