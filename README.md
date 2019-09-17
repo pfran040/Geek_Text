@@ -16,6 +16,8 @@ To run project:
 
 Requires Python 3 
 
+Install Django: pip install Django
+
 Install django crispy forms: pip install --upgrade django-crispy-forms
 
 Navigate to directory that contains manage.py and run python manage.py runserver
