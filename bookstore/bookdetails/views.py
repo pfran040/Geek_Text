@@ -65,6 +65,7 @@ def book_info(request, book_name, slug):
     else:
         book.avg_rating = Review.objects.filter(book=book).aggregate(Avg('rating')).get(
             'rating__avg')  #Get average rating of a book
+        book.avg_rating = round(book.avg_rating, 1)
     book.save()
 
     return render(request, 'bookDetails/book/detail.html', {'book': book,
@@ -107,6 +108,9 @@ def add_review(request, book_name, slug):
 # function to get lists for user currently on the page.
 def getLists(request):
     return List.objects.filter(user=request.user.profile).distinct()
+
+
+#Start calculating best sellers of books
 '''
 #FIXME
 def getBestSellers(request, book_name):

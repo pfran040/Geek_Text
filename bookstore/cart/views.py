@@ -112,8 +112,7 @@ def cart_info(request):
     return render(request, 'cart/info.html', {'userCart': userCart})
 
 
-# This view displays the checkout page
-
+# This view displays the checkout page and lets users purchase books (no credit card validation)
 def checkout(request):
     userCart = Cart(request)
     User = get_object_or_404(Profile, user=request.user)
@@ -123,10 +122,10 @@ def checkout(request):
         if Purchase.objects.filter(book=book, User=User):   #Check if user has already bought book
             if total_copies > 0:
                 purchase = get_object_or_404(Purchase, book=book, User=User)
-                purchase.amount = purchase.amount + total_copies                        #Add total copies to amount user has bought
+                purchase.amount = purchase.amount + total_copies    #Add total copies to amount user has bought
                 purchase.save()
         else:
-            if userCart.get_total_copies(book) > 1:                                     #Check if user wants to buy more than one copy
+            if total_copies > 1:                            #Check if user wants to buy more than one copy
                 Purchase.objects.create(book=book, User=User, amount = (total_copies))  #Create purchase with total copies
             else:
                 Purchase.objects.create(book=book, User=User)                           #Create the one copy of a book

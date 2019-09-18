@@ -87,7 +87,7 @@
                                     {% if user.is_authenticated %}
                                         <a href = "{% url 'bookDetails:add_review' book.book_name book.slug %}" class ="btn btn-primary">Create a Customer Review</a>
 									{% else %}
-                                        <p class="bg-warning">You must be signed to leave a review.</p>
+                                        <p class="bg-warning">You must be signed in to leave a review.</p>
                                     {% endif %}
 								</div><!-- /.row -->
 							</div><!-- /.pull-right -->
