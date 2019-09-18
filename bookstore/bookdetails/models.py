@@ -123,12 +123,12 @@ class Book(models.Model):
 
 
 class Review(models.Model):
-    book        = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='review')  #Each review is attached to a book
+    book        = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='review')  # Each review is attached to a book
     user        = models.ForeignKey(Profile, on_delete=models.CASCADE, default="")
-    display_name= models.CharField(max_length=50, default="")                               #Display name of review
+    display_name= models.CharField(max_length=50, default="")                               # Display name of review
     rating      = models.IntegerField(default=3, validators=[MaxValueValidator(5),
-                                                             MinValueValidator(1)])         #Rating value of star rating
-    message     = models.CharField(max_length=150)                                          #Message body capped at 150 characters
+                                                             MinValueValidator(1)])         # Rating value of rating
+    message     = models.CharField(max_length=150)                                          # Message body capped at 150 char
     created_on  = models.DateTimeField(auto_now_add=True)
     approved    = models.BooleanField(default=False)
 

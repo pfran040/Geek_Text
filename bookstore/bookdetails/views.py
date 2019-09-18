@@ -58,48 +58,60 @@ def book_info(request, book_name, slug):
     if book:
         author_name = book.book_author
         author = get_object_or_404(Author, author_name=author_name)
-    #if an admin deletes a review, recalculate avg, else calculate average ratings
-    if Review.objects.filter(book=book).aggregate(Avg('rating')).get(
-        'rating__avg') == None:
+
+    # if an admin deletes a review, recalculate avg, else calculate average ratings
+    if Review.objects.filter(book=book).aggregate(Avg('rating')).get('rating__avg') == None:
         book.avg_rating = 0.0
     else:
         book.avg_rating = Review.objects.filter(book=book).aggregate(Avg('rating')).get(
-            'rating__avg')  #Get average rating of a book
+            'rating__avg')  # Get average rating of a book
         book.avg_rating = round(book.avg_rating, 1)
     book.save()
+
+    if request.user.is_authenticated:
+        try:
+            User = get_object_or_404(Profile, user=request.user)
+            purchase = Purchase.objects.filter(book=book, User=User)  # Check if user has purchased book
+            if purchase:  # If purchase exists, pass it through and let user leave a review
+                return render(request, 'bookDetails/book/detail.html', {'book': book,
+                                                                        'author': author,
+                                                                        'ATC_book_form': ATC_product_form,
+                                                                        'myLists': myLists,
+                                                                        'purchase': purchase})
+        except Purchase.DoesNotExist:  # If doesn't exist, don't pass it
+            purchase = None
 
     return render(request, 'bookDetails/book/detail.html', {'book': book,
                                                             'author': author,
                                                             'ATC_book_form': ATC_product_form,
                                                             'myLists': myLists})
-#Author: Paul Franco
+# Author: Paul Franco
 def add_review(request, book_name, slug):
-    book = get_object_or_404(Book, book_name=book_name, slug=slug) #Obtain book info
-    User = get_object_or_404(Profile, user=request.user)           #Obtain user info for comment
+    book = get_object_or_404(Book, book_name=book_name, slug=slug) # Obtain book info
+    User = get_object_or_404(Profile, user=request.user)           # Obtain user info for comment
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             message     = form.cleaned_data['message']
-            name        = request.POST.get('name_select')       #Get value of name_select from radio buttons
-            rating      = request.POST.get('rating')            #Get rating from stars
+            name        = request.POST.get('name_select')       # Get value of name_select from radio buttons
+            rating      = request.POST.get('rating')            # Get rating from stars
             review      = form.save(commit=False)
-            review.book = book                                  #Get book for which this review is being applied to
+            review.book = book                                  # Get book for which this review is being applied to
             review.user = User
-            if name == "Username":                              #Check what user selected from name_select radio buttons
+            if name == "Username":                              # Check what user selected from name_select radio buttons
                 review.display_name = User.user
             elif name == "Nickname":
                 review.display_name = User.nick_name
-                if len(review.display_name) == 0:                       #If nickname is not filled, use username
+                if len(review.display_name) == 0:                       # If nickname is not filled, use username
                     review.display_name = User.user
             elif name == "Anonymous":
                 review.display_name = "Anonymous"
             else:
-                review.display_name = request.user                      #Use username if no option is selected
+                review.display_name = request.user                      # Use username if no option is selected
             review.rating = rating
-            review.save()                                       #Need to save rating to update the avg_rating of book
-                                                                #Save form and then redirect back to book_info page for
-                                                                #specific book
+            review.save()                                       # Need to save rating to update the avg_rating of book
+                                                                # Save form and then redirect back to book_info page for specific book
             return redirect('bookDetails:book_info', book_name=book.book_name, slug=book.slug)
     else:
         form = ReviewForm()
