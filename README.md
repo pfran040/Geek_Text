@@ -20,6 +20,8 @@ Install Django: pip install Django
 
 Install django crispy forms: pip install --upgrade django-crispy-forms
 
+Install localflavor: pip install django-localflavor
+
 Navigate to directory that contains manage.py and run python manage.py runserver
 
 Open browser and go to http://127.0.0.1:8000 to access bookstore
