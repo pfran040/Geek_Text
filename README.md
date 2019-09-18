@@ -8,13 +8,15 @@ Tomas Gonzalez -   Wishlist
 
 Dean-Anna Gayle -  Book details
 
-Paul Franco -      Commenting and Rating
+Paul Franco -      Commenting, Rating and Purchases
 
 Raul Espinoza -    Shopping Cart
 
 To run project:
 
 Requires Python 3 
+
+Install Django: pip install Django
 
 Install django crispy forms: pip install --upgrade django-crispy-forms
 
